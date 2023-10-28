@@ -12,7 +12,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'apps.users.apps.UsersConfig'
+    'graphene_django',
+    
+    'apps.utils.apps.UtilsConfig',
+    'apps.stackoverflow.apps.StackoverflowConfig',
+    'apps.users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
