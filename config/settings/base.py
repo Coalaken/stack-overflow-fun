@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'apps.utils.apps.UtilsConfig',
     'apps.stackoverflow.apps.StackoverflowConfig',
     'apps.users.apps.UsersConfig',
+    'apps.appGraphql.apps.AppgraphqlConfig',
 ]
 
 MIDDLEWARE = [
