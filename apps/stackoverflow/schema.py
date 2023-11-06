@@ -6,6 +6,7 @@ from graphene import (
     List, 
     Schema,
     Mutation,
+    Boolean
 )
 from graphene_django import DjangoObjectType
 
@@ -47,7 +48,7 @@ class Query(ObjectType):
     def resolve_all_questions(self, info):
         return Question.objects.all()
     
-    def resolve_question(sel, info, id):
+    def resolve_questoin(sel, info, id):
         # get or None
         return Question.objects.get(id=id)
 
@@ -105,6 +106,18 @@ class UpdateQuestoin(Mutation):
         return UpdateQuestoin(questoin=questoin)
 
 
+class DeleteQuestion(Mutation):
+    ok = Boolean()
+
+    class Arguments:
+        id = Int()
+    
+    def mutate(self, info, id):
+        questoin = Question.objects.get(id=id)
+        questoin.delete()
+        return DeleteQuestion(ok=True)
+
+
 class AddAnswer(Mutation):
     answer = Field(AnswerType)
     
@@ -135,6 +148,18 @@ class UpdateAnswer(Mutation):
         return UpdateAnswer(answer=answer)
 
 
+class DeleteAnswer(Mutation):
+    ok = Boolean()
+    
+    class Arguments:
+        id = Int()
+    
+    def mutate(self, info, id):
+        answer = Answer.objects.get(id=id)
+        answer.delete()
+        return DeleteAnswer(ok=True)
+
+
 class AddQuestionImage(Mutation):
     image = Field(QuestionImageType)
     
@@ -163,13 +188,41 @@ class AddAnswerImage(Mutation):
         return AddAnswerImage(image=image)
 
 
+class DeleteAnswerImage(Mutation):
+    ok = Boolean()
+    
+    class Arguments:
+        id = Int()
+        
+    def mutate(self, info, id):
+        image = AnswerImage.objects.get(id=id)
+        image.delete()
+        return DeleteAnswerImage(ok=True)
+
+
+class DeleteQuestionImage(Mutation):
+    ok = Boolean()
+    
+    class Arguments:
+        id = Int()
+
+    def mutate(self, info, id):
+        image = QuestionImage.objects.get(id=id)
+        image.delete()
+        return DeleteQuestionImage(ok=True)
+
+
 class Mutation(ObjectType):
     add_question = AddQuestion.Field()
     update_question = UpdateQuestoin.Field()
+    delete_question = DeleteQuestion.Field()
     add_question_image = AddQuestionImage.Field()
+    delete_question_image = DeleteQuestionImage.Field()
     add_answer = AddAnswer.Field()
     update_answer = UpdateAnswer.Field()
+    delete_answer = DeleteAnswer.Field()
     add_answer_image = AddQuestionImage.Field()
+    delete_answer_image = DeleteAnswerImage.Field()
 
 
 schema = Schema(query=Query, mutation=Mutation)
